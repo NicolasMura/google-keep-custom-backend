@@ -9,10 +9,8 @@ from pydantic import BaseModel
 # -----------------
 # Configuration
 # -----------------
-EMAIL = os.getenv("KEEP_EMAIL", "ton_email@gmail.com")
-APP_PASSWORD = os.getenv("KEEP_APP_PASSWORD", "mot_de_passe_application")
-ANDROID_ID = os.getenv("KEEP_ANDROID_ID", "ton_android_id")
-API_KEY = os.getenv("API_KEY", "super-secret-key")  # pour sécuriser l’API
+EMAIL = os.getenv("KEEP_EMAIL", "")
+API_KEY = os.getenv("X_API_KEY", "")  # pour sécuriser l’API
 
 # -----------------
 # Google Keep setup
@@ -21,8 +19,6 @@ API_KEY = os.getenv("API_KEY", "super-secret-key")  # pour sécuriser l’API
 
 def get_keep():
     # Auth via gpsoauth
-    EMAIL = "contact@nicolasmura.fr"
-
     # To save the master_token (à faire en ligne de commande sur la machine cible, ou en local avec iTerm):
     # keyring.set_password('google-keep-token', EMAIL, MASTER_TOKEN)
     master_token = keyring.get_password("google-keep-token", EMAIL)
@@ -64,6 +60,8 @@ def add_item(
     x_api_key: str = Header(None)
 ):
     print(f"Adding item '{request.item_text}' to note '{request.note_title}'")
+    print(f"Received API Key: {x_api_key}")
+    print(f"Stored API Key: {API_KEY}")
 
     # Vérification API key
     if x_api_key != API_KEY:

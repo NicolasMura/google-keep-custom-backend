@@ -10,11 +10,13 @@ Pour récupérer l'AndroidID à partir d'un virtual device Android, vous pouvez 
 `adb -s emulator-5554 shell settings get secure android_id`
 """
 
+import os
+
 import gpsoauth
 
-EMAIL = "contact@nicolasmura.fr"
-ANDROID_ID = '56be6dfbf1d43206'
-OAUTH_TOKEN = 'oauth2_4/0AVGzR1CyUaOF-liG_Bpvi9gybiKhFkD0ElF_WLheFwG3vutoWy1SEZliu0SRGKGcAgI20w'
+EMAIL = os.getenv("KEEP_EMAIL", "")
+ANDROID_ID = os.getenv("KEEP_ANDROID_ID", "")
+OAUTH_TOKEN = os.getenv("OAUTH_TOKEN", "")
 
 master_response = gpsoauth.exchange_token(EMAIL, OAUTH_TOKEN, ANDROID_ID)
 # if there's no token check the response for more details
