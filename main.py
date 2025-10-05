@@ -25,8 +25,11 @@ def get_keep():
     # Auth via gpsoauth
     # To save the master_token (à faire en ligne de commande sur la machine cible, ou en local avec iTerm):
     # keyring.set_password('google-keep-token', EMAIL, MASTER_TOKEN)
-    # Ne fonctionnera pas sur Render !!!
-    master_token = keyring.get_password("google-keep-token", EMAIL)
+    # => Ne fonctionnera pas sur Render !!!
+    # Donc on teste d'abord si on est en local
+    if os.getenv("ENV") == "local":
+        print("Running in local environment, loading Google Keep master token from keyring")
+        master_token = keyring.get_password("google-keep-token", EMAIL)
 
     if master_token is None:
         master_token = os.getenv("KEEP_MASTER_TOKEN", "")
