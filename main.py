@@ -2,6 +2,7 @@ import os
 
 import gkeepapi
 import keyring
+from dotenv import load_dotenv
 from fastapi import FastAPI, Header, HTTPException
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
@@ -9,8 +10,11 @@ from pydantic import BaseModel
 # -----------------
 # Configuration
 # -----------------
+load_dotenv()
 EMAIL = os.getenv("KEEP_EMAIL", "")
 API_KEY = os.getenv("X_API_KEY", "")  # pour sécuriser l’API
+print(f"Using email: {EMAIL}")
+print(f"Using API Key: {API_KEY}")
 
 # -----------------
 # Google Keep setup
@@ -21,7 +25,11 @@ def get_keep():
     # Auth via gpsoauth
     # To save the master_token (à faire en ligne de commande sur la machine cible, ou en local avec iTerm):
     # keyring.set_password('google-keep-token', EMAIL, MASTER_TOKEN)
+    # Ne fonctionnera pas sur Render !!!
     master_token = keyring.get_password("google-keep-token", EMAIL)
+
+    if master_token is None:
+        master_token = os.getenv("KEEP_MASTER_TOKEN", "")
 
     if master_token is None:
         raise ValueError(
