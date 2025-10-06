@@ -13,8 +13,6 @@ from pydantic import BaseModel
 load_dotenv()
 EMAIL = os.getenv("KEEP_EMAIL", "")
 API_KEY = os.getenv("X_API_KEY", "")  # pour sécuriser l’API
-print(f"Using email: {EMAIL}")
-print(f"Using API Key: {API_KEY}")
 
 # -----------------
 # Google Keep setup
@@ -73,8 +71,6 @@ def add_item(
     x_api_key: str = Header(None)
 ):
     print(f"Adding item '{request.item_text}' to note '{request.note_title}'")
-    print(f"Received API Key: {x_api_key}")
-    print(f"Stored API Key: {API_KEY}")
 
     # Vérification API key
     if x_api_key != API_KEY:
